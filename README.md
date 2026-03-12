@@ -1,4 +1,4 @@
-# DTSolution — 로그인/로그아웃/회원가입
+# DT Solution — 로그인/로그아웃/회원가입
 
 Spring Boot 기반 회원 인증 시스템 구현 과제
 
@@ -26,6 +26,27 @@ Spring Boot 기반 회원 인증 시스템 구현 과제
 - 비로그인 사용자도 메인 페이지 접근 가능
 - 보호된 페이지 접근 시 로그인 페이지로 리다이렉트
 
+---
+
+## 패키지 구조
+
+```
+com.example.dtsolution/
+├── auth/
+│   ├── application/       # CustomUserDetailsService
+│   ├── config/            # SecurityConfig
+│   ├── domain/dto/        # SignupRequest
+│   └── presentation/      # AuthController
+├── member/
+│   ├── application/       # MemberService
+│   ├── domain/
+│   │   ├── entity/        # Member
+│   │   └── dto/           # MemberResponse
+│   └── infrastructure/
+│       └── repository/    # MemberRepository
+└── global/
+    └── exception/         # GlobalExceptionHandler, 커스텀 예외
+```
 
 ---
 
@@ -35,52 +56,59 @@ Spring Boot 기반 회원 인증 시스템 구현 과제
 
 프로젝트 루트에 `.env` 파일 생성:
 
+```
 DB_PASSWORD=your_mysql_password
+```
 
+### 2. MySQL DB 생성
 
-
-### 2. MySQL DB
-
-
+```sql
+CREATE DATABASE dtsolution CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'dtsolution'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON dtsolution.* TO 'dtsolution'@'localhost';
+```
 
 ### 3. 애플리케이션 실행
 
+```bash
 ./gradlew bootRun
-테이블은 ddl-auto: update 설정으로 자동 생성됩니다.
+```
+
+테이블은 `ddl-auto: update` 설정으로 자동 생성됩니다.
 
 접속: http://localhost:8080
 
-ERD
+---
 
-            Member
+## ERD
 
-| id           │ BIGINT PK AI  │
-│ uuid         │ BINARY(16) UQ │
-│ username     │ VARCHAR(50) UQ│
-│ password     │ VARCHAR(60)   │
-│ role         │ VARCHAR(20)   |
+member 테이블 하나로 구성됩니다.
 
-id — 내부 PK
-uuid — 외부 식별자, 가입 시 자동 생성
-password — BCrypt 해시 저장 (60자 고정)
-role — ROLE_USER
+`id`는 BIGINT 타입의 PK로 내부용으로만 사용하며 외부에 노출하지 않습니다. `uuid`는 BINARY(16) 타입의 외부 식별자로 회원 가입 시 자동 생성됩니다. `username`은 VARCHAR(50) 타입의 로그인 아이디로 유니크 제약이 걸려 있습니다. `password`는 VARCHAR(60) 타입으로 BCrypt 해시값이 저장됩니다. `role`은 VARCHAR(20) 타입으로 현재 ROLE_USER 값이 사용됩니다.
 
+---
 
-API 흐름
-Method	URL	설명
-GET	/	메인 페이지 (비로그인 허용)
-GET	/login	로그인 페이지
-POST	/login	로그인 처리 (Spring Security)
-POST	/logout	로그아웃
-GET	/signup	회원가입 페이지
-POST	/signup	회원가입 처리
+## API 흐름
 
+| Method | URL | 설명 |
+|--------|-----|------|
+| GET | `/` | 메인 페이지 (비로그인 허용) |
+| GET | `/login` | 로그인 페이지 |
+| POST | `/login` | 로그인 처리 (Spring Security) |
+| POST | `/logout` | 로그아웃 |
+| GET | `/signup` | 회원가입 페이지 |
+| POST | `/signup` | 회원가입 처리 |
 
-테스트
+---
 
+## 테스트
+
+```bash
 ./gradlew test
-테스트	방식	대상
-MemberServiceTest:	  Mockito 단위 테스트	
-MemberRepositoryTest:	@DataJpaTest (H2)	findByUsername, existsByUsername
-AuthControllerTest:	  @SpringBootTest + MockMvc	전체 인증 흐름
+```
 
+| 테스트 | 방식 | 대상 |
+|--------|------|------|
+| MemberServiceTest | Mockito 단위 테스트 | signup, getMemberByUsername |
+| MemberRepositoryTest | @DataJpaTest (H2) | findByUsername, existsByUsername |
+| AuthControllerTest | @SpringBootTest + MockMvc | 전체 인증 흐름 |
