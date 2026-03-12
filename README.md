@@ -26,27 +26,6 @@ Spring Boot 기반 회원 인증 시스템 구현 과제
 - 비로그인 사용자도 메인 페이지 접근 가능
 - 보호된 페이지 접근 시 로그인 페이지로 리다이렉트
 
----
-
-## 패키지 구조
-
-com.example.dtsolution/
-├── auth/
-│   ├── application/       # CustomUserDetailsService
-│   ├── config/            # SecurityConfig
-│   ├── domain/dto/        # SignupRequest
-│   └── presentation/      # AuthController
-├── member/
-│   ├── application/       # MemberService
-│   ├── domain/
-│   │   ├── entity/        # Member
-│   │   └── dto/           # MemberResponse
-│   └── infrastructure/
-│       └── repository/    # MemberRepository
-└── global/
-└── exception/         # GlobalExceptionHandler, 커스텀 예외
-
-
 
 ---
 
