@@ -40,7 +40,7 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'    // Thymeleaf에서 sec:authorize 사용
 	implementation 'org.webjars:bootstrap:5.3.3'                              // Bootstrap CSS/JS (WebJars)
 	implementation 'org.webjars:webjars-locator-lite'                         // WebJars 버전 자동 해석
-	implementation 'me.paulschwarz:spring-dotenv:4.0.0'                       // .env 파일로 환경변수 관리
+	// spring-dotenv 제거 — Spring Boot 4.x 내장 config import로 대체
 
 	// --- Lombok ---
 	compileOnly 'org.projectlombok:lombok'
