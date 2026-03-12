@@ -52,19 +52,20 @@ DB_PASSWORD=your_mysql_password
 
 ERD
 
-┌──────────────────────────────┐
-│            member            │
-├──────────────┬───────────────┤
-│ id           │ BIGINT PK AI  │
+            Member
+
+| id           │ BIGINT PK AI  │
 │ uuid         │ BINARY(16) UQ │
 │ username     │ VARCHAR(50) UQ│
 │ password     │ VARCHAR(60)   │
-│ role         │ VARCHAR(20)   │
-└──────────────┴───────────────┘
+│ role         │ VARCHAR(20)   |
+
 id — 내부 PK
 uuid — 외부 식별자, 가입 시 자동 생성
 password — BCrypt 해시 저장 (60자 고정)
 role — ROLE_USER
+
+
 API 흐름
 Method	URL	설명
 GET	/	메인 페이지 (비로그인 허용)
@@ -73,6 +74,8 @@ POST	/login	로그인 처리 (Spring Security)
 POST	/logout	로그아웃
 GET	/signup	회원가입 페이지
 POST	/signup	회원가입 처리
+
+
 테스트
 
 ./gradlew test
