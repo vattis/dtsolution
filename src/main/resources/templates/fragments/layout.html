@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">DT Solution</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+
+<th:block th:fragment="scripts">
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</th:block>
+
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">DTSolution</a>
+        <div class="ms-auto d-flex align-items-center gap-3">
+            <span sec:authorize="isAuthenticated()" class="text-white" sec:authentication="name"></span>
+            <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="m-0">
+                <button type="submit" class="btn btn-outline-light btn-sm">로그아웃</button>
+            </form>
+            <div sec:authorize="isAnonymous()" class="d-flex gap-2">
+                <a th:href="@{/login}" class="btn btn-outline-light btn-sm">로그인</a>
+                <a th:href="@{/signup}" class="btn btn-light btn-sm">회원가입</a>
+            </div>
+        </div>
+    </div>
+</nav>
+</html>

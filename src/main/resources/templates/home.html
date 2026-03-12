@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head th:replace="~{fragments/layout :: head('홈')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-5">
+
+            <div sec:authorize="isAuthenticated()" class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-3">내 계정 정보</h5>
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="text-muted w-25">아이디</th>
+                                <td th:text="${member.username()}"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">권한</th>
+                                <td th:text="${member.role()}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div sec:authorize="isAnonymous()" class="card shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <h5 class="card-title mb-3">DTSolution에 오신 것을 환영합니다</h5>
+                    <p class="text-muted mb-4">서비스를 이용하려면 로그인하세요.</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <a th:href="@{/login}" class="btn btn-primary">로그인</a>
+                        <a th:href="@{/signup}" class="btn btn-outline-secondary">회원가입</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

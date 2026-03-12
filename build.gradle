@@ -1,0 +1,75 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.3'
+	// Spring Boot 의존성 버전 관리 자동화 (BOM)
+	id 'io.spring.dependency-management' version '1.1.7'
+	// 코드 포맷터 (Google Java Format 기반)
+	id 'com.diffplug.spotless' version '7.0.2'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo project for Spring Boot'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	// lombok annotationProcessor를 compileOnly 스코프에도 포함
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// --- 핵심 스타터 ---
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'    // JPA + Hibernate
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'   // 서버사이드 템플릿 엔진
+	implementation 'org.springframework.boot:spring-boot-starter-validation'  // Bean Validation (@Valid, @NotBlank 등)
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'      // Spring MVC
+	implementation 'org.springframework.boot:spring-boot-starter-security'    // Spring Security (인증/인가)
+
+	// --- 부가 기능 ---
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'    // Thymeleaf에서 sec:authorize 사용
+	implementation 'org.webjars:bootstrap:5.3.3'                              // Bootstrap CSS/JS (WebJars)
+	implementation 'org.webjars:webjars-locator-lite'                         // WebJars 버전 자동 해석
+	implementation 'me.paulschwarz:spring-dotenv:4.0.0'                       // .env 파일로 환경변수 관리
+
+	// --- Lombok ---
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// --- 런타임 ---
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'           // 개발 시 자동 재시작
+	runtimeOnly 'com.mysql:mysql-connector-j'                                 // MySQL JDBC 드라이버
+
+	// --- 테스트 (Spring Boot 4.x 슬라이스 테스트 스타터) ---
+	testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test' // Thymeleaf 테스트 지원
+	testImplementation 'org.springframework.boot:spring-boot-starter-validation-test' // Validation 테스트 지원
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'     // MockMvc, @SpringBootTest
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'   // @DataJpaTest
+	testImplementation 'org.springframework.security:spring-security-test'            // @WithMockUser, csrf()
+	testRuntimeOnly 'com.h2database:h2'                                               // 테스트용 인메모리 DB
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// 코드 스타일 자동 포맷 설정
+spotless {
+	java {
+		googleJavaFormat('1.25.2')  // Google Java Format 적용
+		removeUnusedImports()       // 미사용 import 제거
+		trimTrailingWhitespace()    // 줄 끝 공백 제거
+		endWithNewline()            // 파일 끝 개행 보장
+	}
+}
