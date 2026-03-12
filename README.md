@@ -1,4 +1,4 @@
-# DT Solution — 로그인/로그아웃/회원가입
+# DTSolution — 로그인/로그아웃/회원가입
 
 Spring Boot 기반 회원 인증 시스템 구현 과제
 
