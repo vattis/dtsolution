@@ -84,7 +84,13 @@ GRANT ALL PRIVILEGES ON dtsolution.* TO 'dtsolution'@'localhost';
 
 member 테이블 하나로 구성됩니다.
 
-`id`는 BIGINT 타입의 PK로 내부용으로만 사용하며 외부에 노출하지 않습니다. `uuid`는 BINARY(16) 타입의 외부 식별자로 회원 가입 시 자동 생성됩니다. `username`은 VARCHAR(50) 타입의 로그인 아이디로 유니크 제약이 걸려 있습니다. `password`는 VARCHAR(60) 타입으로 BCrypt 해시값이 저장됩니다. `role`은 VARCHAR(20) 타입으로 현재 ROLE_USER 값이 사용됩니다.
+| 컬럼 | 타입 | 제약 | 설명 |
+|------|------|------|------|
+| id | BIGINT | PK, AUTO_INCREMENT | 내부 식별자 (외부 노출 금지) |
+| uuid | BINARY(16) | UNIQUE, NOT NULL | 외부 식별자, 가입 시 자동 생성 |
+| username | VARCHAR(50) | UNIQUE, NOT NULL | 로그인 아이디 |
+| password | VARCHAR(60) | NOT NULL | BCrypt 해시값 |
+| role | VARCHAR(20) | NOT NULL | 권한 (ROLE_USER) |
 
 ---
 
